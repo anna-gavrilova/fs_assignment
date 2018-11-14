@@ -1,0 +1,25 @@
+User
+	- email		- String
+	- gamertag	- String
+	- password	- String
+	- role		- Number
+	- created_on	- Date
+	- games		- [UserGame]
+	- last_login	- Date
+
+UserGame
+	- game_id	- Game
+	- score		- Number
+	- time_played	- Number
+	- last_played	- Date
+
+
+
+
+Game
+	- name		- String
+	- developer	- String
+	- created_on 	- Date
+	- players 	- [User]
+	- genre		- String
+	- release_date	- Date
