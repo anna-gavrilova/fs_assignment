@@ -1,6 +1,5 @@
 User
 	- email		- String
-	- gamertag	- String
 	- password	- String
 	- role		- Number
 	- created_on	- Date
@@ -12,6 +11,7 @@ UserGame
 	- score		- Number
 	- time_played	- Number
 	- last_played	- Date
+	- gamertag	- String
 
 
 
