@@ -16,12 +16,12 @@ import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './_modals/login/login.component';
 import { PlayerTableComponent } from './_directives/player-table/player-table.component';
 import 'hammerjs';
+import { AppRoutingModule } from './app-routing.module';
+import {APP_BASE_HREF} from '@angular/common';
+import { HttpClientModule } from '@angular/common/http'; 
 
 const appRoutes: Routes = [
-  {
-    path: '',
-    component: MainComponent
-  }
+  { path: '', component: MainComponent }
 ];
 
 @NgModule({
@@ -49,7 +49,9 @@ const appRoutes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
