@@ -3,28 +3,33 @@
 </mat-form-field>
 
 <table mat-table [dataSource]="dataSource" matSort class="w-100">
+  <ng-container matColumnDef="nickname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Gamer Tag</th>
+    <td mat-cell *matCellDef="let row"> {{row.nickname}} </td>
+  </ng-container>
 
   <ng-container matColumnDef="gamertag">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Gamer Tag</th>
-    <td mat-cell *matCellDef="let row"> {{row.gamertag}} </td>
+    <td mat-cell *matCellDef="let row"> {{row.bestGame?row.bestGame.gamertag:row.nickname}} </td>
   </ng-container>
 
-  <!-- Progress Column -->
   <ng-container matColumnDef="score">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Score </th>
-    <td mat-cell *matCellDef="let row"> {{row.score}} </td>
+    <td mat-cell *matCellDef="let row"> {{row.bestGame?row.bestGame.score:"-"}} </td>
   </ng-container>
 
-  <!-- Name Column -->
   <ng-container matColumnDef="time_played">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Time Played </th>
-    <td mat-cell *matCellDef="let row"> {{row.time_played}} </td>
+    <td mat-cell *matCellDef="let row"> {{row.bestGame?row.bestGame.time_played:"-"}} </td>
   </ng-container>
 
-  <!-- Color Column -->
   <ng-container matColumnDef="game">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Game </th>
-    <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.game_id.name}} </td>
+<<<<<<< HEAD
+    <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.bestGame?row.bestGame.gameName : "-"}} </td>
+=======
+    <td mat-cell *matCellDef="let row"> {{row.bestGame?row.bestGame.name:"-"}} </td>
+>>>>>>> a8f9f358250ea43ecd394cd6748db648fc6f996f
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

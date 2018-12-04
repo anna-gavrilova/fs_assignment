@@ -17,14 +17,16 @@ import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './_modals/login/login.component';
 import { PlayerTableComponent } from './_directives/player-table/player-table.component';
 import 'hammerjs';
+import { AppRoutingModule } from './app-routing.module';
+import {APP_BASE_HREF} from '@angular/common';
+import {LogincComponent} from './loginc/loginc.component';
+
 
 import { AuthService } from './_services/auth.service';
 
 const appRoutes: Routes = [
-  {
-    path: '',
-    component: MainComponent
-  }
+  { path: '', component: MainComponent },
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({
@@ -34,7 +36,8 @@ const appRoutes: Routes = [
     HeaderComponent,
     FooterComponent,
     LoginComponent,
-    PlayerTableComponent
+    PlayerTableComponent,
+    LogincComponent
   ],
   entryComponents: [
     LoginComponent

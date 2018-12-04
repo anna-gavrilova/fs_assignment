@@ -7,7 +7,11 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [
+    { provide: MatDialogRef, useValue: {} },
+	  { provide: MAT_DIALOG_DATA, useValue: [] }
+  ]
 })
 export class LoginComponent implements OnInit {
 

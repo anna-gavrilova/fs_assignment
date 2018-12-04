@@ -3,6 +3,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { UserGame } from '../../_models/user-game';
 import { User } from '../../_models/user';
 import { Game } from '../../_models/game';
+import {UserService} from '../../user.service';
 
 
 /* Temp Data */
@@ -19,14 +20,18 @@ const GAMES: string[] = ["League of Legends", "Overwatch", "Stardew Valley", "As
 })
 export class PlayerTableComponent implements OnInit {
 
-  displayedColumns: string[] = ["gamertag", "score", "time_played", "game"];
+  displayedColumns: string[] = ["nickname", "gamertag", "score", "time_played", "game"];
   dataSource: MatTableDataSource<UserGame>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor() {
+  constructor(private _uService:UserService) {
     const users = Array.from({length: 100}, (_, k) => this.buildName());
-    this.dataSource = new MatTableDataSource(users);
+    console.log(users);
+    this.dataSource = new MatTableDataSource<any>();
+    this.getUsers();
+    console.log("from player-table.....");
+   
   }
 
   ngOnInit() {
@@ -59,4 +64,14 @@ export class PlayerTableComponent implements OnInit {
     return theGame;
   }
 
+  getUsers(){
+    let that=this;
+    this._uService.getUsers().subscribe(data=>{
+      console.log(data['docs']);
+      this.dataSource=data['docs']
+   });
+   
+  }
 }
+
+
