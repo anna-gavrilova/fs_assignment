@@ -24,7 +24,7 @@ import {LogincComponent} from './loginc/loginc.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
-  {path: 'login', component: LogincComponent}
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({
