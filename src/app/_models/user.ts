@@ -5,6 +5,8 @@ export interface User {
     password: String,
     role: Number,
     created_on: Date,
-    games: UserGame[],
-    last_login: Date
+    games?: UserGame[],
+    last_login?: Date,
+    firstname?: String,
+    lastname?: String
 }

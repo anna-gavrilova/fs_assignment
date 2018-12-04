@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../_services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +16,15 @@ export class LoginComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<LoginComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _authService: AuthService,
+    private _router: Router
     ) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: new String(),
-      password: new String()
+      email: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
@@ -29,7 +33,14 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    
+    let user;
+    if (this.loginForm.valid) {
+      if (user = this._authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value)) {
+        this._router.navigate(['/']);
+      } else {
+        console.log("invalid");
+      }
+    }
   }
 
 }

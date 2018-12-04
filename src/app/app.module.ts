@@ -8,6 +8,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'; 
 
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
@@ -16,6 +17,8 @@ import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './_modals/login/login.component';
 import { PlayerTableComponent } from './_directives/player-table/player-table.component';
 import 'hammerjs';
+
+import { AuthService } from './_services/auth.service';
 
 const appRoutes: Routes = [
   {
@@ -49,9 +52,12 @@ const appRoutes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
