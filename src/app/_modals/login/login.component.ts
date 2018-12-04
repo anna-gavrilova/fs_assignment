@@ -39,10 +39,12 @@ export class LoginComponent implements OnInit {
   login() {
     let user;
     if (this.loginForm.valid) {
-      if (user = this._authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value)) {
+      user = this._authService.getUserDetails(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
+      console.log(user);
+      if (user) {
         this._router.navigate(['/']);
       } else {
-        console.log("invalid");
+        console.log(user);
       }
     }
   }

@@ -1,35 +1,46 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient,HttpParams} from '@angular/common/http';
 import { User } from '../_models/user';
+import { Subject } from 'rxjs';
+import {UserService} from "./user.service";
+//TODO: replace the base url with util.baseurl
+//TODO: handle the user not found error somehow
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-    constructor(private http: HttpClient) { }
 
-    login(email: string, password: string) {
-      let user: User = {
-        firstname: 'Jesse',
-        lastname: 'Wheeler',
-        email: 'jesse.wheeler@georgebrown.ca',
-        password: 'p@ssw0rd',
-        role: 1,
-        created_on: new Date
-      }
-      /*
-        return this.http.post<any>('/api/users/login', { email, password })
-            .pipe(map(user => {
-                if (user && user.token) {
-                    localStorage.setItem('loggedUser', JSON.stringify(user));
-                }
+  //private _userLogged$=new Subject<any>();
+  public _loggedUser:User=null;
+  constructor(private http:HttpClient) {
 
-                return user;
-            }));
-            */
-      return (email === user.email && password === user.password) ? user : null;
-    }
+   }
 
-    logout() {
-        localStorage.removeItem('loggedUser');
+//log in
+  getUserDetails(uname,pass){
+    let body = new HttpParams();
+    body = body.set('username', uname);
+    body = body.set('password', pass);
+    console.log('hello');
+   this.http.post('http://127.0.0.1:5000/api/login',body).subscribe(
+          data=>{
+            if(data['docs']){
+            console.log("User logged in!");
+            this._loggedUser=data['docs'][0];
+            console.log(data);
+            return true;
+            }
+            else
+            console.error("User Not Found");
+            return false;
+          }
+      
+    );
+  }
+
+  //TODO:logout
+    logout(){
+      this._loggedUser=null;
     }
 }

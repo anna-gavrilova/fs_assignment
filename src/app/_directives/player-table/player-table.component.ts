@@ -3,7 +3,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { UserGame } from '../../_models/user-game';
 import { User } from '../../_models/user';
 import { Game } from '../../_models/game';
-import {UserService} from '../../user.service';
+import {UserService} from '../../_services/user.service';
 
 
 /* Temp Data */
