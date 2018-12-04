@@ -24,9 +24,10 @@ export class AuthService {
     body = body.set('password', pass);
    return this.http.post('http://127.0.0.1:5000/api/login',body).subscribe(
           data=>{
-            if(data['docs'].length){
+            if(data['docs']){
             console.log("User logged in!");
-            this._loggedUser=data['docs'];
+            this._loggedUser=data['docs'][0];
+            console.log(data);
             }
             else
             console.error("User Not Found");

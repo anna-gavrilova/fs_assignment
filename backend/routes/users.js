@@ -85,6 +85,19 @@ router.put('/newgame', (req, res, next) => {
 
 })
 
+router.put('/removegame',(req,res,next)=>{
+  const user_id=req.body.id;
+  User.findById(user_id,(err,user)=>{
+    if(err) console.error(err);
+    let allgames=user.games;
+    let i=_.findIndex(allGames,{id:game_id});
+    user.games.splice(i,1);
+    user.save();
+    res.write(JSON.stringify({Success:true,message:"Game was removed from the user's library"}))
+    res.end();
+  })
+})
+
 //Add a user with empty userGame
 router.post('/', (req, res, next) => {
   

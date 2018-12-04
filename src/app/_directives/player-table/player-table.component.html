@@ -24,7 +24,7 @@
   <!-- Color Column -->
   <ng-container matColumnDef="game">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Game </th>
-    <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.bestGame?row.bestGame.name:"-"}} </td>
+    <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.bestGame?row.bestGame.gameName : "-"}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
