@@ -20,7 +20,7 @@ const GAMES: string[] = ["League of Legends", "Overwatch", "Stardew Valley", "As
 })
 export class PlayerTableComponent implements OnInit {
 
-  displayedColumns: string[] = ["gamertag", "score", "time_played", "game"];
+  displayedColumns: string[] = ["nickname", "gamertag", "score", "time_played", "game"];
   dataSource: MatTableDataSource<UserGame>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
