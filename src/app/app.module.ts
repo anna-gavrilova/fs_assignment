@@ -19,9 +19,12 @@ import 'hammerjs';
 import { AppRoutingModule } from './app-routing.module';
 import {APP_BASE_HREF} from '@angular/common';
 import { HttpClientModule } from '@angular/common/http'; 
+import {LogincComponent} from './loginc/loginc.component';
+
 
 const appRoutes: Routes = [
-  { path: '', component: MainComponent }
+  { path: '', component: MainComponent },
+  {path: 'login', component: LogincComponent}
 ];
 
 @NgModule({
@@ -31,7 +34,8 @@ const appRoutes: Routes = [
     HeaderComponent,
     FooterComponent,
     LoginComponent,
-    PlayerTableComponent
+    PlayerTableComponent,
+    LogincComponent
   ],
   entryComponents: [
     LoginComponent

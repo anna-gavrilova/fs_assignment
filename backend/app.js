@@ -2,19 +2,24 @@ var express = require('express');
 var mongoose = require("mongoose");
 var path = require('path');
 var fs = require('fs');
+const bodyParser = require('body-parser');
+var session = require('express-session');
 
 const app=express();
+app.use(session({secret: 'this-is-a-secret-token'}));
 
 const routesUsers=require("./routes/users");
 const routesGames=require("./routes/games");
+const loginRoute=require("./routes/login");
 
-// mongoose.connect("mongodb://admin1:admin1@ds127843.mlab.com:27843/mytestdb")
-//     .then(()=>{
-//         console.log('Connected');
-//     })
-//     .catch((err)=>{
-//         console.error('Connection error ',err.stack)
-//     });
+mongoose.connect("mongodb://admin1:admin1@ds163656.mlab.com:63656/gamer_lobby")
+    .then(()=>{
+        console.log('Connected');
+    })
+    .catch((err)=>{
+        console.error('Connection error ',err.stack)
+    });
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -26,8 +31,13 @@ app.use((req, res, next) => {
   
     next();
   });
-  
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use("/api/users",routesUsers);
 app.use("/api/games",routesGames);
+app.use("/api/login",loginRoute);
 
 module.exports=app;

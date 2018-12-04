@@ -6,25 +6,25 @@
 
   <ng-container matColumnDef="gamertag">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Gamer Tag</th>
-    <td mat-cell *matCellDef="let row"> {{row.gamertag}} </td>
+    <td mat-cell *matCellDef="let row"> {{row.bestGame?row.bestGame.gamertag:row.nickname}} </td>
   </ng-container>
 
   <!-- Progress Column -->
   <ng-container matColumnDef="score">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Score </th>
-    <td mat-cell *matCellDef="let row"> {{row.score}} </td>
+    <td mat-cell *matCellDef="let row"> {{row.bestGame?row.bestGame.score:"-"}} </td>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container matColumnDef="time_played">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Time Played </th>
-    <td mat-cell *matCellDef="let row"> {{row.time_played}} </td>
+    <td mat-cell *matCellDef="let row"> {{row.bestGame?row.bestGame.time_played:"-"}} </td>
   </ng-container>
 
   <!-- Color Column -->
   <ng-container matColumnDef="game">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Game </th>
-    <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.game_id.name}} </td>
+    <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.bestGame?row.bestGame.name:"-"}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
