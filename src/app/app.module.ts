@@ -19,15 +19,18 @@ import { PlayerTableComponent } from './_directives/player-table/player-table.co
 import 'hammerjs';
 import { AppRoutingModule } from './app-routing.module';
 import {APP_BASE_HREF} from '@angular/common';
-import {LogincComponent} from './loginc/loginc.component';
 
 
 import { AuthService } from './_services/auth.service';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from './_guards/auth.guard';
+
+import { NotifierModule, NotifierService } from 'angular-notifier';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
-  {path: 'login', component: LoginComponent}
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
@@ -38,7 +41,7 @@ const appRoutes: Routes = [
     FooterComponent,
     LoginComponent,
     PlayerTableComponent,
-    LogincComponent
+    ProfileComponent
   ],
   entryComponents: [
     LoginComponent
@@ -57,10 +60,13 @@ const appRoutes: Routes = [
     MatPaginatorModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NotifierModule
   ],
   providers: [
     AuthService,
+    AuthGuard,
+    NotifierService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
