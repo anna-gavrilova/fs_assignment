@@ -8,11 +8,7 @@ import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  providers: [
-    { provide: MatDialogRef, useValue: {} },
-	  { provide: MAT_DIALOG_DATA, useValue: [] }
-  ]
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
 
@@ -42,11 +38,12 @@ export class LoginComponent implements OnInit {
     let user;
     if (this.loginForm.valid) {
       this._authService.getUserDetails(this.loginForm.controls.email.value, this.loginForm.controls.password.value).subscribe((data) => {
-          if(data['docs'].length){
-            localStorage.setItem('loggedUser', JSON.stringify(data['docs'][0]));
-            this._userService.nextUser.next(data['docs'][0]);
+        console.log(data);
+          if(data['docs']){
+            localStorage.setItem('loggedUser', JSON.stringify(data['docs']));
+            this._userService.nextUser.next(data['docs']);
             this.dialogRef.close();
-            this._notifierService.notify('success', 'Welcome back ' + data['docs'][0]['nickname'] + '!');
+            this._notifierService.notify('success', 'Welcome back ' + data['docs']['nickname'] + '!');
           }
           else
             this._notifierService.notify('error', 'Invalid login.')
