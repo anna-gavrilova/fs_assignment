@@ -12,7 +12,6 @@ router.post("/",(req,res,next)=>{
     User.login(req.body.username,req.body.password,(err,user)=>{
         
         if(err){
-            console.log(err);
             res.json({Success:false, message:err.message});
         }
         else if(user)

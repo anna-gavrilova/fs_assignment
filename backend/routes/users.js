@@ -30,12 +30,16 @@ router.get('/:id',(req,res,next)=>{
   User.findById(id)
   .exec()
   .then(doc=>{
-    res.status(200).json(doc);
+    res.json({
+      Success:true,
+      message:"User found!",
+      docs:doc
+    });
   })
   .catch(err=>{
-    console.error(err)
     res.status(500).json({
-      err:error
+      Success:false,
+      message:err
     });
   });
 })
@@ -104,12 +108,13 @@ router.put('/removegame',(req,res,next)=>{
   const user_id=user.user;
   if(user){
   User.findById(user_id,(err,user)=>{
-    if(err) console.error(err);
-    let allgames=user.games;
+    if(err)  res.json({Success:false,message:"Error"});
+    else{
     let i=_.findIndex(allGames,{id:game_id});
     user.games.splice(i,1);
     user.save();
     res.json({Success:true,message:"Game was removed from the user's library"});
+    }
   })
 }else{
   res.json({Success:false,message:"Forbidden"});
@@ -134,19 +139,26 @@ router.post('/', (req, res, next) => {
 })
 
  bcrypt.hash(req.body.pass, 10, function(err, hash) {
-   if(err) console.log(err)
+   if(err) res.json({ 
+            Success:false,
+            message:"User  not added"
+          })
    else{
      newUser.password=hash;
      newUser.save()
      .then(result=>{
-      res.status(201).json({
+      res.json({
+        Success:true,
         message:"User added",
         createdUser:result
       })
     }
   )
   .catch(err=>{
-    console.error(err)
+    res.json({ 
+      Success:false,
+      message:"User  not added"
+    })
   })
    }
   });

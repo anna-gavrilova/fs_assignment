@@ -34,11 +34,9 @@ const userSchema=mongoose.Schema(
 
 userSchema.statics.login=function (_email,pass,callback){
     return this.findOne({ email: _email}, function (err, user) {
-        console.log(user);
         if (err) callback(err,null)
         else{
         bcrypt.compare(pass, user.password, function(err, res) {
-            console.log(pass)
             callback(err,res);
         });
     }}
