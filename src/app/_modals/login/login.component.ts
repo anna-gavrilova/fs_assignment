@@ -7,18 +7,14 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  providers: [
-    { provide: MatDialogRef, useValue: {} },
-	  { provide: MAT_DIALOG_DATA, useValue: [] }
-  ]
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
 
   private loginForm: FormGroup;
 
   constructor(
-    public dialogRef: MatDialogRef<LoginComponent>,
+    private dialogRef: MatDialogRef<LoginComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private _authService: AuthService,
@@ -39,13 +35,23 @@ export class LoginComponent implements OnInit {
   login() {
     let user;
     if (this.loginForm.valid) {
-      user = this._authService.getUserDetails(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
-      console.log(user);
-      if (user) {
-        this._router.navigate(['/']);
-      } else {
-        console.log(user);
-      }
+      this._authService.getUserDetails(this.loginForm.controls.email.value, this.loginForm.controls.password.value).subscribe((data) => {
+          if(data['docs']){
+            console.log("User logged in!");
+            this._authService._loggedUser=data['docs'][0];
+            localStorage.setItem('loggedUser', JSON.stringify(data['docs'][0]));
+            this.dialogRef.close();
+          }
+          else
+            console.error("User Not Found");
+        }
+      );
+      // console.log(user);
+      // if (user) {
+        
+      // } else {
+      //   console.log(user);
+      // }
     }
   }
 

@@ -8,7 +8,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; 
 
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
@@ -23,6 +23,7 @@ import {LogincComponent} from './loginc/loginc.component';
 
 
 import { AuthService } from './_services/auth.service';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
@@ -59,7 +60,12 @@ const appRoutes: Routes = [
     HttpClientModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

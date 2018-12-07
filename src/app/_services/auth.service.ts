@@ -6,9 +6,7 @@ import {UserService} from "./user.service";
 //TODO: replace the base url with util.baseurl
 //TODO: handle the user not found error somehow
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
 
   //private _userLogged$=new Subject<any>();
@@ -22,21 +20,7 @@ export class AuthService {
     let body = new HttpParams();
     body = body.set('username', uname);
     body = body.set('password', pass);
-    console.log('hello');
-   this.http.post('http://127.0.0.1:5000/api/login',body).subscribe(
-          data=>{
-            if(data['docs']){
-            console.log("User logged in!");
-            this._loggedUser=data['docs'][0];
-            console.log(data);
-            return true;
-            }
-            else
-            console.error("User Not Found");
-            return false;
-          }
-      
-    );
+    return this.http.post('http://127.0.0.1:5000/api/login',body);
   }
 
   //TODO:logout

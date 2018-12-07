@@ -3,10 +3,11 @@ var mongoose = require("mongoose");
 var path = require('path');
 var fs = require('fs');
 const bodyParser = require('body-parser');
-var session = require('express-session');
+var cors = require('cors');
 
 const app=express();
-app.use(session({secret: 'this-is-a-secret-token'}));
+app.use(cors());
+
 
 const routesUsers=require("./routes/users");
 const routesGames=require("./routes/games");
@@ -24,7 +25,7 @@ mongoose.connect("mongodb://admin1:admin1@ds163656.mlab.com:63656/gamer_lobby")
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+        'Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept', 'user');
     res.setHeader(
         'Access-Control-Allow-Methods',
         'GET, POST, PUT, PATCH, DELETE, OPTIONS');
