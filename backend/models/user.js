@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 var Game = require('./game').Game;
+const bcrypt = require('bcrypt');
 
 
 var schemaOptions = {
@@ -32,11 +33,14 @@ const userSchema=mongoose.Schema(
 
 
 userSchema.statics.login=function (_email,pass,callback){
-
-    return this.find({email:_email,password:pass})
-            .exec(function(err,users){
-               callback(err,users);
-            });
+    return this.findOne({ email: _email}, function (err, user) {
+        if (err) callback(err,null)
+        else{
+        bcrypt.compare(pass, user.password, function(err, res) {
+            callback(err,res);
+        });
+    }}
+    );
 }
 
 userSchema.statics.get_all=function(callback){
@@ -44,6 +48,7 @@ userSchema.statics.get_all=function(callback){
         callback(err,user);
     })
 }
+
 
 userSchema.virtual('bestGame').get(function(){
     if(this.games.length!==0){

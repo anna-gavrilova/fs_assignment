@@ -1,22 +1,25 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../_services/auth.service';
-import { Router } from '@angular/router';
 import { UserService } from 'src/app/_services/user.service';
 import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [
+    { provide: MatDialogRef, useValue: {} },
+	  { provide: MAT_DIALOG_DATA, useValue: [] }
+  ]
 })
 export class LoginComponent implements OnInit {
 
   private loginForm: FormGroup;
 
   constructor(
-    private dialogRef: MatDialogRef<LoginComponent>,
+    public dialogRef: MatDialogRef<LoginComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private _authService: AuthService,
@@ -49,12 +52,6 @@ export class LoginComponent implements OnInit {
             this._notifierService.notify('error', 'Invalid login.')
         }
       );
-      // console.log(user);
-      // if (user) {
-        
-      // } else {
-      //   console.log(user);
-      // }
     }
   }
 

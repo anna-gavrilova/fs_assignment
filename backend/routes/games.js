@@ -9,30 +9,44 @@ router.useMethod;
 router.get('/', (req, res, next) => {
 
   Game.find({},(err,games)=>{
-    if(err)console.log(err);
-    res.write(JSON.stringify({Success:true,message:"Games were Retrieved",docs:games}));
-    res.end();
+    if(err) res.json({Success:false,message:err})
+    else
+    res.json({Success:true,message:"Games were Retrieved",docs:games});
   });
 
 });
 
 router.get('/:id',(req,res,next)=>{
 
-  //TODO:find uniq game
   Game.findById(req.params.id,(err,game)=>{
-    if(err)console.log(err);
-    res.write(JSON.stringify({Success:true,message:"Game was Retrieved",docs:game}))
-    res.end();
+    if(err) res.json({Success:false,message:err})
+    else
+    res.json({Success:true,message:"Game was Retrieved",docs:game});
+
   })
 })
 
-router.put('/:id', (req, res, next) => {
-
-
-
-  // Implement Mongoose update game by ID
+//returns all the gamers that playes that specific game
+router.get('/gamers/:id',(req,res,next)=>{
+  const user=req.user;
+  const game_id=req.params.id;
+  if(user){
+    Game.get_all_players(game_id,(err,result)=>{
+      if(err){
+        res.json({Success:false,message:err});
+      }else{
+        res.json({Success:true,message:"Games were Retrieved",docs:result});
+      }
+    })
+  }
+  else
+  res.json({Success:false,message:"Forbidden"});
 
 })
+
+
+
+
 router.post('/', (req, res, next) => {
 
   const newGame= new Game({
@@ -47,35 +61,36 @@ router.post('/', (req, res, next) => {
 
   newGame.save()
   .then(result=>{
-      res.status(201).json({
+      res.json({
+        Success:true,
         message:"Game added",
-        createdGame:result
+        docs:result
       })
     }
   )
   .catch(err=>{
-    console.error(err)
+    res.json({
+      Success:false,
+      message:err
+    })
   })
 
 
 })
 
+
+//Deletes the game and removes all the references to it in user games subdocument
 router.delete('/:id', (req, res, next) => {
-
-  Game.findById(req.params.id,(err,game)=>{
-    if(err) res.status(500).send(err);
-    game.remove(err=>{
-      if(err){
-      res.status(500).send(err)
-      }
-      else{
-        //TODO: User.deleteGame(find by id(req.params.is))
-        res.status(204).write(JSON.stringify({Success:true,message:"Game was deleted",docs:game}));
-      }
-      res.end()
-    })
+if(req.user){
+  Game.remove_game(req.params.id,(err,result)=>{
+    if(err) res.json({Success:false,message:err})
+    else{
+      res.json({Success:true,message:result.message.nModified});
+    }
   })
-
+}else{
+  res.json({Success:false,message:"Forbidden"});
+}
 });
 
 

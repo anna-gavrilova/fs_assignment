@@ -5,7 +5,9 @@ import { User } from '../_models/user';
 import {UserService} from "./user.service";
 import { NotifierService } from 'angular-notifier';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
   constructor(private http:HttpClient, private _userService: UserService, private _router: Router, private _notifierService: NotifierService) {}
