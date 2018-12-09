@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
-var Game = require('./game').Game;
+var Game = require('./game');
 const bcrypt = require('bcrypt');
+var Schema = mongoose.Schema;
+
 
 
 var schemaOptions = {
@@ -20,8 +22,7 @@ const userSchema=mongoose.Schema(
     role:Number,
     created_on:Date,
     games:[{
-        gameID:String,
-        gameName:String,
+        game:{ type: Schema.Types.ObjectId, ref: 'Game' },
         score:Number,
         time_played:Number,
         last_played:Date,
@@ -32,12 +33,35 @@ const userSchema=mongoose.Schema(
     },schemaOptions);
 
 
+userSchema.statics.new_user=function(user,callback){
+    user.save((err,user)=>{
+        callback(err,user);
+    })
+}
+
+userSchema.statics.remove_game=function(userId,gameId,callback){
+    this.update({_id:userId},{ $pull: {games: { $elemMatch:{_id:gameId} } } },{multi:true},(err,doc)=>{
+        callback(err,doc);
+    });
+}
+
+userSchema.statics.remove_user=function(id,callback){
+    this.findOneAndDelete({_id:id},(err,game)=>{
+        callback(err,game);
+    })
+}
+userSchema.statics.get_single_user=function(id,callback){
+    this.findById(id,(err,user)=>{
+        callback(err,user);
+    })
+}
 userSchema.statics.login=function (_email,pass,callback){
     return this.findOne({ email: _email}, function (err, user) {
         if (err) callback(err,null)
         else{
         bcrypt.compare(pass, user.password, function(err, res) {
-            callback(err,res);
+            if(res)
+            callback(err,user);
         });
     }}
     );

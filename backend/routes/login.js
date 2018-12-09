@@ -2,6 +2,7 @@ const express = require("express");
 //const StudentModel = require('../models/student');
 const User =require('../models/user')
 const router = express.Router();
+const Util=require('../util');
 
 router.useMethod;
 
@@ -12,11 +13,11 @@ router.post("/",(req,res,next)=>{
     User.login(req.body.username,req.body.password,(err,user)=>{
         
         if(err){
-            res.json({Success:false, message:err.message});
+            Util.res(res,false,err.message,[])
         }
         else if(user)
-        res.json({Success:true,docs:user,message:"User logged in"})
-        else res.json({Success:true,docs:user,message:"Wrong password"})
+        Util.res(res,true,"User logged in",user)
+        else Util.res(res,false,"Wrong password",[])
     });
     
 });
