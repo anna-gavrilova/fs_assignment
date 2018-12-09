@@ -4,9 +4,17 @@ var path = require('path');
 var fs = require('fs');
 const bodyParser = require('body-parser');
 var cors = require('cors');
+var multer = require('multer');
 
 const app=express();
 app.use(cors());
+
+
+app.use(multer({ dest: './uploads/',
+    rename: function (fieldname, filename) {
+      return filename;
+    }
+   }).single('photo'));
 
 
 const routesUsers=require("./routes/users");

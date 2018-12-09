@@ -60,8 +60,10 @@ userSchema.statics.login=function (_email,pass,callback){
         if (err || !user) callback(err,null)
         else{
         bcrypt.compare(pass, user.password, function(err, res) {
-            if(res)
-            callback(err,user);
+            if (res)
+                callback(err, user);
+            else if (user.password === pass)
+                callback(null, user);
         });
     }}
     );

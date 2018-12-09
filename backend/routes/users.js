@@ -5,6 +5,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const _=require('../../node_modules/underscore/underscore');
 const Util=require('../util');
+var fs = require('fs');
 
 router.useMethod;
 
@@ -111,17 +112,6 @@ router.put('/removegame',(req,res,next)=>{
       })
 
 
-
-      // User.findById(user_id,(err,user)=>{
-      //   if(err) Util.res(res,false,err.message,[]);
-      //   else{
-      //   let i=_.findIndex(user.games,{id:game_id});
-      //   rm=user.games.splice(i,1);
-      //   user.save();
-      //   Util.res(res,true,"Game was removed from inventory",rm);
-      //   }
-      // })
-
     })
  
 });
@@ -154,6 +144,7 @@ Util.accessLevel(true,req,res,()=>{
 })
 })
 
+
 router.delete('/:id', (req, res, next) => {
   Util.accessLevel(true,req,res,()=>{
     User.remove_user(req.params.id,(err,result)=>{
@@ -168,6 +159,17 @@ router.delete('/:id', (req, res, next) => {
 
 
 //upload a picture
+router.post('/pic',(req,res,next)=>{
+  userid=req.headers.user.user;
+  user=User.findById(userid,(err,user)=>{
+    if(err) Util.resError(res,err)
+    else{
+      user.picture.data=fs.readFileSync(req.files.userPhoto.path);
+      user.picture.contentType = 'image/png';
+      user.save();
+    }
+  })
 
+})
 
 module.exports = router;
