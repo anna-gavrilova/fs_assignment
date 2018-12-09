@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule, MatButtonModule } from '@angular/material';
+import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,12 +26,18 @@ import { AuthService } from './_services/auth.service';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { AdminGuard } from './_guards/admin.guard';
 
 import { NotifierModule, NotifierService } from 'angular-notifier';
+import { AdminComponent } from './admin/admin.component';
+import { GamesTableComponent } from './_directives/games-table/games-table.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'admin', canActivate: [AdminGuard], children: [
+    { path: '', component: AdminComponent }
+  ]}
 ];
 
 @NgModule({
@@ -41,7 +48,9 @@ const appRoutes: Routes = [
     FooterComponent,
     LoginComponent,
     PlayerTableComponent,
-    ProfileComponent
+    ProfileComponent,
+    AdminComponent,
+    GamesTableComponent
   ],
   entryComponents: [
     LoginComponent
@@ -58,6 +67,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
+    MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -66,6 +76,7 @@ const appRoutes: Routes = [
   providers: [
     AuthService,
     AuthGuard,
+    AdminGuard,
     NotifierService,
     {
       provide: HTTP_INTERCEPTORS,

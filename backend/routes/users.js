@@ -14,6 +14,8 @@ router.useMethod;
 router.get('/', (req, res, next) => {
 
   User.get_all((err,users)=>{
+    console.log(req.headers.user);
+    console.log(JSON.parse(req.headers.user).role);
     if(err){        
       Util.res(res,false,err.message,[]);
     }
