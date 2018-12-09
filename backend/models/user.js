@@ -57,11 +57,18 @@ userSchema.statics.get_single_user=function(id,callback){
 }
 userSchema.statics.login=function (_email,pass,callback){
     return this.findOne({ email: _email}, function (err, user) {
-        if (err) callback(err,null)
+        if (err || !user) callback(err,null)
         else{
         bcrypt.compare(pass, user.password, function(err, res) {
+<<<<<<< HEAD
             if(res)
             callback(err,user);
+=======
+            if (res)
+                callback(err, user);
+            else if (user.password === pass)
+                callback(null, user);
+>>>>>>> df6fb3dc58fac615d94f2ba44386da7b9b52f394
         });
     }}
     );

@@ -27,7 +27,7 @@ export class PlayerTableComponent implements OnInit {
 
   constructor(private _uService:UserService) {
     const users = Array.from({length: 100}, (_, k) => this.buildName());
-    console.log(users);
+    //console.log(users);
     this.dataSource = new MatTableDataSource<any>();
     this.getUsers();
     console.log("from player-table.....");
@@ -58,8 +58,6 @@ export class PlayerTableComponent implements OnInit {
       gamertag: GAMERTAGS[Math.round(Math.random() * (GAMERTAGS.length - 1))],
       time_played: Math.round(Math.random() * 5000000)
     }
-
-    console.log(theGame);
 
     return theGame;
   }

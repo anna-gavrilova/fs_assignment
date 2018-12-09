@@ -1,14 +1,27 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient,HttpParams} from '@angular/common/http';
+import { User } from '../_models/user';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http:HttpClient) { }
+  public user: User = null;
+  public nextUser = new ReplaySubject<User>(null);
 
+  constructor(private http:HttpClient) {
+    if (this.user === null) {
+      this.nextUser.subscribe((user: User) => {
+        this.user = user;
+      });
+    }
+    if (this.user === null && localStorage.getItem('loggedUser')) {
+      this.nextUser.next(<User>JSON.parse(localStorage.getItem('loggedUser')));
+    }
+  }
 
   getUsers(){
     return this.http.get('http://127.0.0.1:5000/api/users');

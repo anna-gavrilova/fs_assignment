@@ -1,17 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../_services/auth.service';
-import { Router } from '@angular/router';
+import { UserService } from 'src/app/_services/user.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  providers: [
-    { provide: MatDialogRef, useValue: {} },
-	  { provide: MAT_DIALOG_DATA, useValue: [] }
-  ]
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
 
@@ -22,7 +19,8 @@ export class LoginComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private _authService: AuthService,
-    private _router: Router
+    private _userService: UserService,
+    private _notifierService: NotifierService
     ) { }
 
   ngOnInit() {
@@ -39,11 +37,18 @@ export class LoginComponent implements OnInit {
   login() {
     let user;
     if (this.loginForm.valid) {
-      user = this._authService.getUserDetails(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
-      if (user) {
-        this._router.navigate(['/']);
-      } else {
-      }
+      this._authService.getUserDetails(this.loginForm.controls.email.value, this.loginForm.controls.password.value).subscribe((data) => {
+        console.log(data);
+          if(data['docs']){
+            localStorage.setItem('loggedUser', JSON.stringify(data['docs']));
+            this._userService.nextUser.next(data['docs']);
+            this.dialogRef.close();
+            this._notifierService.notify('success', 'Welcome back ' + data['docs']['nickname'] + '!');
+          }
+          else
+            this._notifierService.notify('error', 'Invalid login.')
+        }
+      );
     }
   }
 
