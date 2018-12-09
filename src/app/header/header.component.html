@@ -13,6 +13,7 @@
           <button class="btn btn-primary" ngbDropdownToggle>{{_userService.user.nickname}}</button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
             <button class="dropdown-item" [routerLink]="['profile']">Profile</button>
+            <button class="dropdown-item" [routerLink]="['admin']" *ngIf="_userService.user.role === 0">Admin</button>
             <button class="dropdown-item" (click)="logout()">Logout</button>
           </div>
         </div>

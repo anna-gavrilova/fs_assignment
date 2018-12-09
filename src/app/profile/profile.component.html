@@ -2,17 +2,19 @@
 <hr class="mb-2">
 
 <div class="row">
-  <div class="col-6">
-
+  <div class="col-6 text-center">
+    <img src="../../assets/default.jpg" class="w-50">
   </div>
   <div class="col-6">
     <label for="email">Email</label>
-    <div class="input-group">
+    <div class="input-group mb-2">
       <input type="text" id="email" class="form-control" disabled [value]="_userService.user.email">
     </div>
     <label for="fav">Favourite Game</label>
-    <div class="input-group">
-      <input type="text" id="fav" class="form-control" disabled [value]="_userService.user.email">
+    <div class="input-group mb-2">
+      <select class="form-control" id="fav" [value]="_userService.user.bestGame" disabled>
+        <option *ngFor="let game of _userService.user.games" [value]="game.gameID">{{game.name}}</option>
+      </select>
     </div>
   </div>
 </div>

@@ -12,6 +12,8 @@ router.useMethod;
 router.get('/', (req, res, next) => {
 
   User.get_all((err,users)=>{
+    console.log(req.headers.user);
+    console.log(JSON.parse(req.headers.user).role);
     if(err){        
       res.json({Success:false,message:err});
     }
@@ -181,7 +183,6 @@ router.delete('/:id', (req, res, next) => {
       else{
         res.json({Success:true,message:"Game was deleted",docs:game});
       }
-      res.end()
     });
    }
  })
