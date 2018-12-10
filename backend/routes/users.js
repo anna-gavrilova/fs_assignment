@@ -149,7 +149,7 @@ Util.accessLevel(true,req,res,()=>{
 router.post('/update',(req,res,next)=>{
   Util.accessLevel(false,req,res,()=>{
     userid=JSON.parse(req.headers.user).user;
-    User.update_fields(userid,req.body,(err,user)=>{
+    User.update_fields(userid,_.pick(req.body,'email','nickname','password'),(err,user)=>{
       if(err) Util.resError(res,err)
       else Util.res(res,true,"User was successfully updated",user);
     })
