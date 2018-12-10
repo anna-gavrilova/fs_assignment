@@ -1,0 +1,20 @@
+<h5 class="mb-3">Add Game</h5>
+<form [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field class="w-100">
+        <mat-select placeholder="Game" formControlName="game">
+          <mat-option *ngFor="let game of games" [value]="game">{{game.name}} - {{game.developer}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    <mat-form-field class="w-100">
+        <input matInput
+                placeholder="Gamer Tag"
+                formControlName="gamertag">
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+      <button type="button" mat-stroked-button (click)="close()" class="w-25">Cancel</button>
+      <button type="submit" mat-stroked-button color="primary" (click)="addGame()" class="ml-auto w-50">Add Game</button>
+  </mat-dialog-actions>
+</form>
