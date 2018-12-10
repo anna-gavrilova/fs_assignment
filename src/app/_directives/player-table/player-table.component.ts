@@ -18,13 +18,12 @@ export class PlayerTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private _uService:UserService) {
-    this.dataSource = new MatTableDataSource<any>();
-    this.getUsers();
+    this.dataSource = new MatTableDataSource<UserGame>();
+    
   }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.getUsers();
   }
 
   applyFilter(filterValue: string) {
@@ -38,8 +37,9 @@ export class PlayerTableComponent implements OnInit {
   getUsers(){
     let that=this;
     this._uService.getUsers().subscribe(data=>{
-      console.log(data['docs']);
-      this.dataSource=data['docs']
+      this.dataSource = new MatTableDataSource<UserGame>(data['docs']);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
    });
    
   }

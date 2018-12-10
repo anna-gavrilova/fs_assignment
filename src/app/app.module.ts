@@ -8,6 +8,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; 
@@ -30,10 +31,17 @@ import { NotifierModule, NotifierService } from 'angular-notifier';
 import { AdminComponent } from './admin/admin.component';
 import { GamesTableComponent } from './_directives/games-table/games-table.component';
 import { AddGameComponent } from './_modals/add-game/add-game.component';
+import { GamesComponent } from './games/games.component';
+import { UsersTableComponent } from './_directives/users-table/users-table.component';
+import { AddUserComponent } from './_modals/add-user/add-user.component';
+import { UserGameComponent } from './_modals/user-game/user-game.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile', canActivate: [AuthGuard], children: [
+    { path: '', component: ProfileComponent },
+    { path: ':id', component: ProfileComponent }
+  ]},
   { path: 'admin', canActivate: [AdminGuard], children: [
     { path: '', component: AdminComponent }
   ]}
@@ -50,11 +58,17 @@ const appRoutes: Routes = [
     ProfileComponent,
     AdminComponent,
     GamesTableComponent,
-    AddGameComponent
+    AddGameComponent,
+    GamesComponent,
+    UsersTableComponent,
+    AddUserComponent,
+    UserGameComponent
   ],
   entryComponents: [
     LoginComponent,
-    AddGameComponent
+    AddGameComponent,
+    AddUserComponent,
+    UserGameComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +84,7 @@ const appRoutes: Routes = [
     MatPaginatorModule,
     MatTabsModule,
     MatIconModule,
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

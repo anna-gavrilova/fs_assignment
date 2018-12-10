@@ -44,7 +44,7 @@ router.put('/updategame',(req,res,next)=>{
   const user=req.user;
   const user_id=user.user;
   const role=req.user.role;
-  const game_id=req.body.gameID;
+  const game_id=req.body.game;
   Util.accessLevel(false,req,res,()=>{
     User.findById(user_id,(err,user)=>{
       if(err) Util.res(res,false,err.message,[])

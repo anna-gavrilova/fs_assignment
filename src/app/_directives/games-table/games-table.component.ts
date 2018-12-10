@@ -34,16 +34,27 @@ export class GamesTableComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  addGame() {
+  addGame(game) {
     const dialogRef = this.dialog.open(AddGameComponent, {
-      width: '350px'
+      width: '350px',
+      data: game
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      let games = this.dataSource.data;
-      games.push(res);
-      this.setTable(games);
+      if (res) {
+        let games = this.dataSource.data;
+        games.push(res);
+        this.setTable(games);
+      }
     });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   removeGame(game) {

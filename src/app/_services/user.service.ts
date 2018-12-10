@@ -27,4 +27,17 @@ export class UserService {
     return this.http.get('http://127.0.0.1:5000/api/users');
   }
 
+  addUser(user) {
+    return this.http.post('http://127.0.0.1:5000/api/users', user);
+  }
+
+  removeUser(user) {
+    return this.http.delete('http://127.0.0.1:5000/api/users/' + user);
+  }
+
+  addGame(game) {
+    console.log(game);
+    return this.http.put('http://127.0.0.1:5000/api/users/newgame', game);
+  }
+
 }
