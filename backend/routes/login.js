@@ -13,11 +13,11 @@ router.post("/",(req,res,next)=>{
     User.login(req.body.username,req.body.password,(err,user)=>{
         
         if(err){
-            Util.res(res,false,err.message,[])
+            Util.resError(res,err)
         }
         else if(user)
         Util.res(res,true,"User logged in",user)
-        else Util.res(res,false,"Wrong password",[])
+        else Util.res(res,false,"Wrong password")
     });
     
 });
