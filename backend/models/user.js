@@ -75,7 +75,7 @@ userSchema.statics.login=function (_email,pass,callback){
 }
 
 userSchema.statics.get_all=function(callback){
-    return this.find(function(err,user){
+    return this.find().exec(function(err,user){
         callback(err,user);
     })
 }
