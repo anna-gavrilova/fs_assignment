@@ -102,9 +102,22 @@ userSchema.statics.upload_picture=function(id,file,originalfile,callback){
 }
 
 userSchema.statics.update_fields=function(id,options,callback){
-    this.findOneAndUpdate({_id:id},_.pick(options,'email','nickname'),{new:true},(err,user)=>{
+    let that=this;
+    if(options.password)
+    bcrypt.hash(options.password, 10, function(err, hash) {
+        if(err) callback(err,null)
+        else{
+            options.password=hash;
+            that.findOneAndUpdate({_id:id},options,{new:true},(err,user)=>{
+                callback(err,user);
+            })
+        }
+    })
+    else
+    this.findOneAndUpdate({_id:id},options,{new:true},(err,user)=>{
         callback(err,user);
     })
+
 }
 
 userSchema.virtual('bestGame').get(function(){
