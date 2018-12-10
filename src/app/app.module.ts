@@ -7,6 +7,7 @@ import { MatInputModule, MatButtonModule } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; 
@@ -18,9 +19,6 @@ import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './_modals/login/login.component';
 import { PlayerTableComponent } from './_directives/player-table/player-table.component';
 import 'hammerjs';
-import { AppRoutingModule } from './app-routing.module';
-import {APP_BASE_HREF} from '@angular/common';
-
 
 import { AuthService } from './_services/auth.service';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
@@ -31,6 +29,7 @@ import { AdminGuard } from './_guards/admin.guard';
 import { NotifierModule, NotifierService } from 'angular-notifier';
 import { AdminComponent } from './admin/admin.component';
 import { GamesTableComponent } from './_directives/games-table/games-table.component';
+import { AddGameComponent } from './_modals/add-game/add-game.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
@@ -50,10 +49,12 @@ const appRoutes: Routes = [
     PlayerTableComponent,
     ProfileComponent,
     AdminComponent,
-    GamesTableComponent
+    GamesTableComponent,
+    AddGameComponent
   ],
   entryComponents: [
-    LoginComponent
+    LoginComponent,
+    AddGameComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +69,7 @@ const appRoutes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     MatTabsModule,
+    MatIconModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -78,6 +80,7 @@ const appRoutes: Routes = [
     AuthGuard,
     AdminGuard,
     NotifierService,
+    MatIconRegistry,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
