@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
   login() {
     let user;
     if (this.loginForm.valid) {
-      console.log("meow");
       this._authService.getUserDetails(this.loginForm.controls.email.value, this.loginForm.controls.password.value).subscribe((data) => {
         console.log(data);
           if(data['docs']){

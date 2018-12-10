@@ -10,11 +10,11 @@ const app=express();
 app.use(cors());
 
 
-app.use(multer({ dest: './uploads/',
+app.use(multer({ dest: 'uploads/',
     rename: function (fieldname, filename) {
       return filename;
     }
-   }).single('photo'));
+   }).single('userPhoto'));
 
 
 const routesUsers=require("./routes/users");

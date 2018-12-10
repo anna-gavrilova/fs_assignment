@@ -28,7 +28,8 @@ const userSchema=mongoose.Schema(
         last_played:Date,
         gamertag:String
      }],
-    last_login:Date
+    last_login:Date,
+    img: { data: Buffer, contentType: String }
 
     },schemaOptions);
 
@@ -52,6 +53,7 @@ userSchema.statics.remove_user=function(id,callback){
 }
 userSchema.statics.get_single_user=function(id,callback){
     this.findById(id,(err,user)=>{
+        console.log(id);
         callback(err,user);
     })
 }
