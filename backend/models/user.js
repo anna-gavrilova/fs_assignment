@@ -55,7 +55,6 @@ userSchema.statics.remove_user=function(id,callback){
 }
 userSchema.statics.get_single_user=function(id,callback){
     this.findById(id,(err,user)=>{
-        console.log(id);
         callback(err,user);
     })
 }
@@ -64,17 +63,19 @@ userSchema.statics.login=function (_email,pass,callback){
         if (err || !user) callback(err,null)
         else{
         bcrypt.compare(pass, user.password, function(err, res) {
-            if (res)
+            if(err || !res) callback(err,null)
+            else if (res) //if passwords matched
                 callback(err, user);
-            else if (user.password === pass)
-                callback(null, user);
+            // else if (user.password === pass)//just for that user with not hashed password
+            //     callback(null, user);
+            
         });
     }}
     );
 }
 
 userSchema.statics.get_all=function(callback){
-    return this.find().exec(function(err,user){
+    return this.find(function(err,user){
         callback(err,user);
     })
 }

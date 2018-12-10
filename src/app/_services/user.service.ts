@@ -19,6 +19,7 @@ export class UserService {
       });
     }
     if (this.user === null && localStorage.getItem('loggedUser')) {
+
       this.nextUser.next(<User>JSON.parse(localStorage.getItem('loggedUser')));
     }
   }
