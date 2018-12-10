@@ -164,8 +164,7 @@ var type = multer({ dest: 'uploads/'}).single('userPhoto');
 
 router.post('/pic', type, function (req,res) {
   
-
-
+Util.accessLevel(false,req,res,()=>{
   var userid=JSON.parse(req.headers.user).user;
   var tmp_path = req.file.path;
  
@@ -175,24 +174,10 @@ router.post('/pic', type, function (req,res) {
   });
 
 
+})
+
+
 });
 
-//upload a picture
-// router.post('/pic',(req,res,next)=>{
-//   console.log("uploading stuff....");
-//   userid=req.headers.user.user;
-//   user=User.findById(userid,(err,user)=>{
-//     if(err) Util.resError(res,err)
-//     else{
-//       user.picture.data=fs.readFileSync(req.files.userPhoto.path);
-//       user.picture.contentType = 'image/jpg';
-//       user.save((err,res)=>{
-//         if(err) Util.resError(res,err)
-//         else Util.res(res,true,"File was uploaded",res)
-//       });
-//     }
-//   })
-
-// })
 
 module.exports = router;

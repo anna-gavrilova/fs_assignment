@@ -22,12 +22,16 @@ var util={
         var role;
         if(req.headers.user){
             role=JSON.parse(req.headers.user).role;
+
+            if((admin&&role===this.roles.admin)||!admin){
+                callback();
+            }else{
+                this.resForbidden(res);
+            }
         }
-        if((admin&&role===this.roles.admin)||!admin){
-            callback();
-        }else{
-            this.resForbidden(res);
-        }
+        else this.resForbidden(res);
+
+
     },
 
     resForbidden:function(res){
