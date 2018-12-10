@@ -3,6 +3,8 @@ var Game = require('./game');
 const bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 
+const _=require('../../node_modules/underscore/underscore');
+var fs = require('fs');
 
 
 var schemaOptions = {
@@ -29,7 +31,7 @@ const userSchema=mongoose.Schema(
         gamertag:String
      }],
     last_login:Date,
-    img: { data: Buffer, contentType: String }
+    img: String
 
     },schemaOptions);
 
@@ -77,6 +79,33 @@ userSchema.statics.get_all=function(callback){
     })
 }
 
+userSchema.statics.upload_picture=function(id,file,originalfile,callback){
+    this.findById(id,(err,user)=>{
+        var target_path = 'uploads/' + originalfile;
+        var src = fs.createReadStream(file);
+        var dest = fs.createWriteStream(target_path);
+        src.pipe(dest);
+        src.on('end', function() {
+            fs.unlink(file,(err)=>{})
+            if(user.img!=="assets/default.jpg"&&user.img!==target_path)
+                fs.unlink(user.img, (err) => {
+                  if (err) console.log(err.message)
+                });
+           
+            user.img=target_path;
+            user.save((err,user)=>{
+                if(err) callback(err,null);
+                else callback(null,user)
+              })
+            })
+        });
+}
+
+userSchema.statics.update_fields=function(id,options,callback){
+    this.findOneAndUpdate({_id:id},_.pick(options,'email','nickname'),{new:true},(err,user)=>{
+        callback(err,user);
+    })
+}
 
 userSchema.virtual('bestGame').get(function(){
     if(this.games.length!==0){

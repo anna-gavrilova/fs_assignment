@@ -15,8 +15,6 @@ router.useMethod;
 router.get('/', (req, res, next) => {
 
   User.get_all((err,users)=>{
-    console.log(req.headers.user);
-    console.log(JSON.parse(req.headers.user).role);
     if(err){        
       Util.res(res,false,err.message,[]);
     }
@@ -128,7 +126,8 @@ Util.accessLevel(true,req,res,()=>{
     role:req.body.role,
     created_on:new Date(),
     games:[],
-    last_login:new Date()
+    last_login:new Date(),
+    img:"assets/default.jpg"
   
   })
   
@@ -147,6 +146,16 @@ Util.accessLevel(true,req,res,()=>{
 })
 })
 
+router.post('/update',(req,res,next)=>{
+  Util.accessLevel(false,req,res,()=>{
+    userid=JSON.parse(req.headers.user).user;
+    User.update_fields(userid,req.body,(err,user)=>{
+      if(err) Util.resError(res,err)
+      else Util.res(res,true,"User was successfully updated",user);
+    })
+  })
+
+})
 
 router.delete('/:id', (req, res, next) => {
   Util.accessLevel(true,req,res,()=>{
@@ -162,52 +171,21 @@ router.delete('/:id', (req, res, next) => {
 var type = multer({ dest: 'uploads/'}).single('userPhoto');
 
 router.post('/pic', type, function (req,res) {
-
+  
+Util.accessLevel(false,req,res,()=>{
   var userid=JSON.parse(req.headers.user).user;
-  console.log(userid);
   var tmp_path = req.file.path;
-  var target_path = 'uploads/' + req.file.originalname;
+ 
+  User.upload_picture(userid,tmp_path,req.file.originalname,(err,user)=>{
+    if(err) Util.resError(res,err.message)
+    else Util.res(res,true,"File was uploaded",user);
+  });
 
-  var src = fs.createReadStream(tmp_path);
-  var dest = fs.createWriteStream(target_path);
-  src.pipe(dest);
 
-  src.on('end', function() {
-    var imgPath = target_path;
-    User.get_single_user(userid,(err,user)=>{
-      if(err) Util.resError(res,err);
-      else{
-        console.log(user);
-        user.img.data=fs.readFileSync(imgPath);
-        user.img.contentType='image/png';
-        user.save((err,user)=>{
-          if(err) Util.resError(res,err);
-          else Util.res(res,true,"File was uploaded",user)
-        })
-      }
-    })
+})
+
 
 });
 
-src.on('error', function(err) { Util.res(res,false,err.message,[])});
-
-});
-//upload a picture
-// router.post('/pic',(req,res,next)=>{
-//   console.log("uploading stuff....");
-//   userid=req.headers.user.user;
-//   user=User.findById(userid,(err,user)=>{
-//     if(err) Util.resError(res,err)
-//     else{
-//       user.picture.data=fs.readFileSync(req.files.userPhoto.path);
-//       user.picture.contentType = 'image/jpg';
-//       user.save((err,res)=>{
-//         if(err) Util.resError(res,err)
-//         else Util.res(res,true,"File was uploaded",res)
-//       });
-//     }
-//   })
-
-// })
 
 module.exports = router;
