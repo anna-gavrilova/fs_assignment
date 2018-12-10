@@ -2,37 +2,37 @@ import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
-import { GameService } from 'src/app/_services/game.service';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
-  selector: 'app-add-game',
-  templateUrl: './add-game.component.html',
-  styleUrls: ['./add-game.component.css']
+  selector: 'app-add-user',
+  templateUrl: './add-user.component.html',
+  styleUrls: ['./add-user.component.css']
 })
-export class AddGameComponent implements OnInit {
+export class AddUserComponent implements OnInit {
 
   private form: FormGroup;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<AddGameComponent>,
+    public dialogRef: MatDialogRef<AddUserComponent>,
     private fb: FormBuilder,
-    private _gameService: GameService,
+    private _userService: UserService,
     private _notifierService: NotifierService
     ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      developer: ['', Validators.required],
-      genre: ['', Validators.required],
-      release: ['', Validators.required]
+      nickname: ['', Validators.required],
+      email: ['', Validators.required],
+      pass: ['', Validators.required],
+      role: [1, Validators.required]
     });
   }
 
-  addGame() {
+  addUser() {
     if (this.form.valid && !this.form.pristine) {
-      this._gameService.addGame(this.form.getRawValue()).subscribe(res => {
+      this._userService.addUser(this.form.getRawValue()).subscribe(res => {
         if (res['success']) {
           this._notifierService.notify('success', res['message']);
           this.dialogRef.close(res['docs']);

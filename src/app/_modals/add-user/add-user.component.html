@@ -1,0 +1,32 @@
+<h5 class="mb-3">Add User</h5>
+<form [formGroup]="form">
+  <mat-dialog-content>
+      <mat-form-field class="w-100">
+          <input matInput
+                  placeholder="Nickname"
+                  formControlName="nickname">
+      </mat-form-field>
+      <mat-form-field class="w-100">
+          <input matInput
+                  placeholder="Email"
+                  formControlName="email">
+      </mat-form-field>
+      <mat-form-field class="w-100">
+        <input matInput
+                placeholder="Password"
+                formControlName="pass"
+                type="password">
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-select placeholder="Role" formControlName="role">
+        <mat-option value="0">Admin</mat-option>
+        <mat-option value="1">User</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+      <button type="button" mat-stroked-button (click)="close()" class="w-25">Cancel</button>
+      <button type="submit" mat-stroked-button color="primary" (click)="addUser()" class="ml-auto w-50">Add User</button>
+  </mat-dialog-actions>
+</form>
