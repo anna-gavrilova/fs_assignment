@@ -128,7 +128,8 @@ Util.accessLevel(true,req,res,()=>{
     role:req.body.role,
     created_on:new Date(),
     games:[],
-    last_login:new Date()
+    last_login:new Date(),
+    img:"assets/default.jpg"
   
   })
   
@@ -162,36 +163,20 @@ router.delete('/:id', (req, res, next) => {
 var type = multer({ dest: 'uploads/'}).single('userPhoto');
 
 router.post('/pic', type, function (req,res) {
+  
+
 
   var userid=JSON.parse(req.headers.user).user;
-  console.log(userid);
   var tmp_path = req.file.path;
-  var target_path = 'uploads/' + req.file.originalname;
+ 
+  User.upload_picture(userid,tmp_path,req.file.originalname,(err,user)=>{
+    if(err) Util.resError(res,err.message)
+    else Util.res(res,true,"File was uploaded",user);
+  });
 
-  var src = fs.createReadStream(tmp_path);
-  var dest = fs.createWriteStream(target_path);
-  src.pipe(dest);
-
-  src.on('end', function() {
-    var imgPath = target_path;
-    User.get_single_user(userid,(err,user)=>{
-      if(err) Util.resError(res,err);
-      else{
-        console.log(user);
-        user.img.data=fs.readFileSync(imgPath);
-        user.img.contentType='image/png';
-        user.save((err,user)=>{
-          if(err) Util.resError(res,err);
-          else Util.res(res,true,"File was uploaded",user)
-        })
-      }
-    })
 
 });
 
-src.on('error', function(err) { Util.res(res,false,err.message,[])});
-
-});
 //upload a picture
 // router.post('/pic',(req,res,next)=>{
 //   console.log("uploading stuff....");
