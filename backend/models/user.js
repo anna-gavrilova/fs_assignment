@@ -3,6 +3,7 @@ var Game = require('./game');
 const bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 
+const _=require('../../node_modules/underscore/underscore');
 var fs = require('fs');
 
 
@@ -98,6 +99,12 @@ userSchema.statics.upload_picture=function(id,file,originalfile,callback){
               })
             })
         });
+}
+
+userSchema.statics.update_fields=function(id,options,callback){
+    this.findOneAndUpdate({_id:id},_.pick(options,'email','nickname'),{new:true},(err,user)=>{
+        callback(err,user);
+    })
 }
 
 userSchema.virtual('bestGame').get(function(){
