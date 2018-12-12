@@ -31,20 +31,21 @@ export class ProfileComponent implements OnInit {
     this.route.params.subscribe(params => {
 
       if (params && params.id) {
-        this.iUser = this._userService.user;
         this.params = params;
         this._userService.getUser(params.id).subscribe(user => {
           if (!user['success']) {
+            this._notifierService.notify('error', 'User not found.');
             this.router.navigate(['/']);
             return;
           }
           this.iUser = user['docs'];
+          this.setTable(this.iUser.games);
         });
       } else {
         this.displayedColumns.push("actions");
         this.iUser = this._userService.user;
+        this.setTable(this.iUser.games);
       }
-      this.setTable(this.iUser.games);
     })
     this.form = this.fb.group({
       file: [null, Validators.required]
