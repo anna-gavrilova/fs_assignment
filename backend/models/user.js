@@ -43,7 +43,7 @@ userSchema.statics.new_user=function(user,callback){
 }
 
 userSchema.statics.remove_game=function(userId,gameId,callback){
-    this.update({_id:userId},{ $pull: {games: { $elemMatch:{_id:gameId} } } },{multi:true},(err,doc)=>{
+    this.updateOne({_id:userId},{ $pull: {games: { _id: gameId  } } }, {new: true}, (err,doc)=>{
         callback(err,doc);
     });
 }
@@ -59,7 +59,9 @@ userSchema.statics.get_single_user=function(id,callback){
     })
 }
 userSchema.statics.login=function (_email,pass,callback){
-    return this.findOne({ email: _email}, function (err, user) {
+    return this.findOne({ email: _email})
+    .populate('games.game')
+    .exec(function (err, user) {
         if (err || !user) callback(err,null)
         else{
         bcrypt.compare(pass, user.password, function(err, res) {
@@ -131,6 +133,11 @@ userSchema.virtual('bestGame').get(function(){
         })
         return tempBestGame;
     }
+})
+
+userSchema.pre('find', function(next) {
+    this.populate('games.game');
+    next();
 })
 
 module.exports=mongoose.model("User",userSchema);

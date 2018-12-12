@@ -85,8 +85,11 @@ User.findById(user_id,(err,user)=>{
   if (err) Util.resError(res,err)
   else{
     user.games.push(newGamePlayed);
-    user.save();
-    Util.res(res,true,"Game was added to the inventory",newGamePlayed);
+    user.save().then(user => {
+      user.populate('games.game').execPopulate().then(user => {
+        Util.res(res,true,"Game was added to the inventory", user);
+      });
+    });
   }
 
 })
@@ -101,7 +104,7 @@ router.put('/removegame',(req,res,next)=>{
 
 
     Util.accessLevel(true,req,res,()=>{
-      const user=req.user;
+      const user=JSON.parse(req.headers.user);
       const user_id=user.user;
       const game_id=req.body.game
       User.remove_game(user_id,game_id,(err,result)=>{

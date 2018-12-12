@@ -38,9 +38,9 @@ import { UserGameComponent } from './_modals/user-game/user-game.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
-  { path: 'profile', canActivate: [AuthGuard], children: [
-    { path: '', component: ProfileComponent },
-    { path: ':id', component: ProfileComponent }
+  { path: 'profile', children: [
+    { path: '', canActivate: [AuthGuard], component: ProfileComponent },
+    { path: ':id', canActivate: [AuthGuard], component: ProfileComponent }
   ]},
   { path: 'admin', canActivate: [AdminGuard], children: [
     { path: '', component: AdminComponent }

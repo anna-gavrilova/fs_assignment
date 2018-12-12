@@ -16,6 +16,7 @@ export class UserService {
     if (this.user === null) {
       this.nextUser.subscribe((user: User) => {
         this.user = user;
+        localStorage.setItem('loggedUser', JSON.stringify(user));
       });
     }
     if (this.user === null && localStorage.getItem('loggedUser')) {
@@ -37,8 +38,19 @@ export class UserService {
   }
 
   addGame(game) {
-    console.log(game);
     return this.http.put('http://127.0.0.1:5000/api/users/newgame', game);
+  }
+
+  changeAvatar(file) {
+    return this.http.post('http://127.0.0.1:5000/api/users/pic', file);
+  }
+
+  removeGame(game) {
+    return this.http.put('http://127.0.0.1:5000/api/users/removegame', game);
+  }
+
+  getUser(user) {
+    return this.http.get('http://127.0.0.1:5000/api/users/' + user);
   }
 
 }

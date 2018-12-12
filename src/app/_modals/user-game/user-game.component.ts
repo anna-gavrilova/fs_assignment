@@ -51,4 +51,8 @@ export class UserGameComponent implements OnInit {
     }
   }
 
+  close() {
+    this.dialogRef.close();
+  }
+
 }

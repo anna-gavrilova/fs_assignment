@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
     let user;
     if (this.loginForm.valid) {
       this._authService.getUserDetails(this.loginForm.controls.email.value, this.loginForm.controls.password.value).subscribe((data) => {
-        console.log(data);
           if(data['docs']){
             localStorage.setItem('loggedUser', JSON.stringify(data['docs']));
             this._userService.nextUser.next(data['docs']);

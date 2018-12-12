@@ -21,8 +21,8 @@ export class AuthService {
   }
 
   logout(){
-    localStorage.removeItem('loggedUser');
     this._userService.nextUser.next(null);
+    localStorage.removeItem('loggedUser');
     this._router.navigate(['/']);
     this._notifierService.notify('error', 'You have logged out.');
   }
