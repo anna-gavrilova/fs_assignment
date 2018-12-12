@@ -140,4 +140,9 @@ userSchema.pre('find', function(next) {
     next();
 })
 
+userSchema.pre('findOne', function(next) {
+    this.populate('games.game');
+    next();
+})
+
 module.exports=mongoose.model("User",userSchema);

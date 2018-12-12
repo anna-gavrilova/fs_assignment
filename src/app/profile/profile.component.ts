@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit {
             return;
           }
           this.iUser = user['docs'];
+          console.log(this.iUser);
           this.setTable(this.iUser.games);
         });
       } else {
